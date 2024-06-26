@@ -918,6 +918,7 @@ local ext_mime_map = {
 	["726"] = "audio/32kadpcm",
 	["adts"] = "audio/aac",
 	["aac"] = "audio/aac",
+	["ass"] = "audio/aac",
 	["ac3"] = "audio/ac3",
 	["amr"] = "audio/AMR",
 	["awb"] = "audio/AMR-WB",
@@ -1146,7 +1147,6 @@ local ext_mime_map = {
 	["md"] = "text/markdown",
 	["miz"] = "text/mizar",
 	["n3"] = "text/n3",
-	["ass"] = "text/plain",
 	["txt"] = "text/plain",
 	["asc"] = "text/plain",
 	["text"] = "text/plain",
@@ -1303,7 +1303,6 @@ local ext_mime_map = {
 	["stw"] = "application/vnd.sun.xml.writer.template",
 	["sis"] = "application/vnd.symbian.install",
 	["mms"] = "application/vnd.wap.mms-message",
-	["7z"] = "application/x-7z-compressed",
 	["anx"] = "application/x-annodex",
 	["bcpio"] = "application/x-bcpio",
 	["torrent"] = "application/x-bittorrent",
@@ -1396,6 +1395,7 @@ local ext_mime_map = {
 	["flv"] = "video/x-flv",
 	["fxm"] = "video/x-javafx",
 	["mkv"] = "video/x-matroska",
+	["rmvb"] = "application/vnd.rn-realmedia",
 	["mk3d"] = "video/x-matroska-3d",
 	["asx"] = "video/x-ms-asf",
 	["wm"] = "video/x-ms-wm",
@@ -1439,8 +1439,7 @@ function M:preload()
 	
 
 	if #unmatch_ext_urls then
-		local file_one_path = os.getenv("YAZI_FILE_ONE") or "file"
-	  local command = Command(file_one_path):arg("--mime-type"):stdout(Command.PIPED):stderr(Command.PIPED)
+	  local command = Command("file"):arg("--mime-type"):stdout(Command.PIPED):stderr(Command.PIPED)
 	  if ya.target_family() == "windows" then
 		command:arg("-b")
 	  else
@@ -1468,7 +1467,7 @@ function M:preload()
 	end
   
 	if #mimes then
-	  ya.manager_emit("update_mimetype", { updates = mimes })
+	  ya.manager_emit("update_mimetype", {}, mimes)
 	  return 3
 	end
 	return 2
